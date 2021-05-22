@@ -8,8 +8,11 @@ usage : -c -0.8 0.156
 -i : sets the number of iterations to perform (default : 100)
 usage : -i 25
 
--s : sets the coloring algorithm to smooth (default : false)
+-s : sets smooth coloring as true (default : false)
 usage : -s
+
+-m : sets the mode to mandelbrot set, overrides -c (default : julia)
+usage : -m
 ```
 
 Example:
