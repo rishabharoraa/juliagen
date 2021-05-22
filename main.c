@@ -60,6 +60,10 @@ iterateDiscrete(float ci, float cr, float zi, float zr)
 float
 iterateSmooth(float ci, float cr, float zi, float zr)
 {
+  /*    pretty much the same function as interateDiscrete,
+   *    but with a smooth coloring function in the return statement
+   *    that returns a float in the range [0,iter) rather than an integer
+   */
   float n = 0;
   while((zr*zr)+(zi*zi) <= 4 && n < iter) {
     float tempi, tempr;
@@ -69,7 +73,6 @@ iterateSmooth(float ci, float cr, float zi, float zr)
     zi = tempi;
     n++;
   }
-  //printf("%f\n",n+1-logf(log2f(sqrtf((zi*zi)+(zr*zr)))));
   return n + 1 - logf(log2f(sqrtf((zi*zi)+(zr*zr))));
 }
 
@@ -82,8 +85,7 @@ color(float iterations)
    *    new = b1 + ((old - a1)(b2 - b1)) / (a2 - a1)
    */
   float shade = (255 + iterations*(-255) / (float)(iter));
-  //printf("%d\n",(int)shade);
-  fprintf(res, "%d %d %d\n", (int)shade, (int)shade, (int)shade);
+  fprintf(res, "%d %d %d\n", (int)shade, (int) shade, (int) shade);
 }
 
 int
@@ -94,7 +96,6 @@ main(int argc, char *argv[])
   float zi = 0.156f;
   side = 1024;
   iter = 100;
-  char* color = "grayscale";
   smooth = false;
 
   for(int i = 1; i < argc; i++) {
