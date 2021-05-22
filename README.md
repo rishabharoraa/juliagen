@@ -1,4 +1,4 @@
-# juliagen - simple julia set generator
+# juliagen - julia set generator
 
 Commands:
 ```
