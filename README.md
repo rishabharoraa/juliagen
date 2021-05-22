@@ -14,6 +14,6 @@ usage : -s
 
 Example:
 ```
-./julia -s -i 150
+julia -s -i 150
 ```
 ![image](./preview.png)
