@@ -3,7 +3,9 @@
 #include<string.h>
 #include<math.h>
 
-void plot(float, float);
+typedef enum {false, true} bool;
+
+void plot(float, float, bool);
 int iterateDiscrete(float, float, float, float);
 float iterateSmooth(float, float, float, float);
 void color(float);
@@ -13,14 +15,16 @@ FILE *res;
 /* for x cells to be mapped to [-2,2], partitions must be 4 / x */
 int side;
 int iter;
+bool smooth;
 
 void
-plot(float zi, float zr)
+plot(float zi, float zr, bool smooth)
 {
   float step = (4 / (float)side);
   for(float i = -2.0f; i < 2.0f; i+=step) {
     for(float r = -2.0f; r < 2.0f; r+=step) {
-      color(iterateSmooth(zi, zr, i, r));
+      if(smooth)  color(iterateSmooth(zi, zr, i, r));
+      else color(iterateDiscrete(zi, zr, i, r));
     }
   }
 }
@@ -89,8 +93,9 @@ main(int argc, char *argv[])
   float zi = 0.01f;
   float zr = 0.285f;
   side = 1024;
-  iter = 100;
+  iter = 15;
   char* color = "grayscale";
+  smooth = false;
 
   for(int i = 1; i < argc; i++) {
     if(strcmp(argv[i],"-c") == 0) {
@@ -101,6 +106,9 @@ main(int argc, char *argv[])
     if(strcmp(argv[i],"-i") == 0) {
       iter = atoi(argv[i+1]);
       i++;
+    }
+    if(strcmp(argv[i],"-s") == 0) {
+      smooth = true;
     }
   }
 
@@ -115,7 +123,7 @@ main(int argc, char *argv[])
   fprintf(res, "%d %d\n", side, side);
   fprintf(res, "%d\n", 255);
 
-  plot(zi, zr);
+  plot(zi, zr, smooth);
   fclose(res);
   printf("Julia set generated as res.ppm\n");
 
