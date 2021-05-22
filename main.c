@@ -1,10 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<math.h>
 
 void plot(float, float);
-int iterate(float, float, float, float);
-void color(int);
+int iterateDiscrete(float, float, float, float);
+float iterateSmooth(float, float, float, float);
+void color(float);
 
 /* creating the resultant image file */
 FILE *res;
@@ -18,13 +20,13 @@ plot(float zi, float zr)
   float step = (4 / (float)side);
   for(float i = -2.0f; i < 2.0f; i+=step) {
     for(float r = -2.0f; r < 2.0f; r+=step) {
-      color(iterate(zi, zr, i, r));
+      color(iterateSmooth(zi, zr, i, r));
     }
   }
 }
 
 int
-iterate(float ci, float cr, float zi, float zr)
+iterateDiscrete(float ci, float cr, float zi, float zr)
 {
   int n = 0;
   while((zr*zr)+(zi*zi) <= 4 && n < iter) {
@@ -48,19 +50,36 @@ iterate(float ci, float cr, float zi, float zr)
     zi = tempi;
     n++;
   }
-  return n;
+  return n+1;
+}
+
+float
+iterateSmooth(float ci, float cr, float zi, float zr)
+{
+  float n = 0;
+  while((zr*zr)+(zi*zi) <= 4 && n < iter) {
+    float tempi, tempr;
+    tempr = (zr*zr) - (zi*zi) + cr;
+    tempi = 2*zr*zi + ci;
+    zr = tempr;
+    zi = tempi;
+    n++;
+  }
+  //printf("%f\n",n+1-logf(log2f(sqrtf((zi*zi)+(zr*zr)))));
+  return n + 1 - logf(log2f(sqrtf((zi*zi)+(zr*zr))));
 }
 
 void
-color(int iterations)
+color(float iterations)
 {
   /*
    *    for mapping a number from [a1,a2] to [b1,b2],
    *    here, from [0,iter] to [255,0]
    *    new = b1 + ((old - a1)(b2 - b1)) / (a2 - a1)
    */
-  int shade = 255 + (iterations*(-255) / iter);
-  fprintf(res, "%d %d %d\n", shade, shade, shade);
+  float shade = (255 + iterations*(-255) / (float)(iter));
+  //printf("%d\n",(int)shade);
+  fprintf(res, "%d %d %d\n", (int)shade, (int)shade, (int)shade);
 }
 
 int
@@ -70,7 +89,7 @@ main(int argc, char *argv[])
   float zi = 0.01f;
   float zr = 0.285f;
   side = 1024;
-  iter = 15;
+  iter = 100;
   char* color = "grayscale";
 
   for(int i = 1; i < argc; i++) {
