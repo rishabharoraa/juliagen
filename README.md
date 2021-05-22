@@ -1,6 +1,6 @@
 # juliagen - simple julia set generator
 
-Commands :
+Commands:
 ```
 -c : sets the inital condition c (default : -0.8 0.156)
 usage : -c -0.8 0.156
@@ -11,3 +11,9 @@ usage : -i 25
 -s : sets the coloring algorithm to smooth (default : false)
 usage : -s
 ```
+
+Example:
+```
+./julia -s -i 150
+```
+![image](./preview.png)
