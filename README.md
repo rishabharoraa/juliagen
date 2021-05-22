@@ -16,7 +16,14 @@ usage : -m
 ```
 
 Example:
+
 ```
-julia -s -i 150
+julia -s -m
 ```
-![image](./preview.png)
+![image](./media/mandelbrot.png)
+
+
+```
+julia -c 0.285 0.01 -i 50
+```
+![image](./media/preview.png)
