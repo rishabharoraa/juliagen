@@ -26,4 +26,4 @@ julia -s -m
 ```
 julia -c 0.285 0.01 -i 50
 ```
-![image](./media/preview.png)
+![image](./media/julia.png)
