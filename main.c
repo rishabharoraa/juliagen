@@ -12,7 +12,6 @@ void color(float);
 
 /* creating the resultant image file */
 FILE *res;
-/* for x cells to be mapped to [-2,2], partitions must be 4 / x */
 int side;
 int iter;
 bool smooth;
@@ -20,7 +19,9 @@ bool smooth;
 void
 plot(float zi, float zr, bool smooth)
 {
+  /* for x cells to be mapped to [-2,2], partitions must be 4 / x */
   float step = (4 / (float)side);
+
   for(float i = -2.0f; i < 2.0f; i+=step) {
     for(float r = -2.0f; r < 2.0f; r+=step) {
       if(smooth)  color(iterateSmooth(zi, zr, i, r));
