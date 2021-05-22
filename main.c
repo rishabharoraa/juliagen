@@ -90,10 +90,10 @@ int
 main(int argc, char *argv[])
 {
   /* "sane" defaults */
-  float zi = 0.01f;
-  float zr = 0.285f;
+  float zr = -0.8f;
+  float zi = 0.156f;
   side = 1024;
-  iter = 15;
+  iter = 100;
   char* color = "grayscale";
   smooth = false;
 
