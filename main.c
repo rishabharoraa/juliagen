@@ -1,3 +1,5 @@
+/* author - Rishabh Arora (github.com/RishabhAroraa) */
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
