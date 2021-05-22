@@ -76,6 +76,12 @@ iterateSmooth(float ci, float cr, float zi, float zr)
     zi = tempi;
     n++;
   }
+  /*
+   *    the smooth factor 1 - log(log2(abs(z))) converts the
+   *    number of iterations returned into a smooth function,
+   *    which the color() function uses as a parameter for coloring
+   *    the julia set
+   */
   return n + 1 - logf(log2f(sqrtf((zi*zi)+(zr*zr))));
 }
 
