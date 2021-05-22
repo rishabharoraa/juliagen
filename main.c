@@ -17,6 +17,7 @@ FILE *res;
 int side;
 int iter;
 bool smooth;
+bool mandelbrot;
 
 void
 plot(float zi, float zr, bool smooth)
@@ -36,12 +37,27 @@ int
 iterateDiscrete(float ci, float cr, float zi, float zr)
 {
   int n = 0;
+  /*    tempi and tempr are introduced so that the calculation
+   *    below (in the while loop) does not use the new value for the
+   *    second expression. Not using them introduced a nasty bug that
+   *    took HOURS to debug.
+   */
+  float tempi, tempr;
+
+  /*
+   *    checks if -mandelbrot flag is set and if so,
+   *    generates a mandelbrot set instead of julia set
+  */
+  if(mandelbrot) {
+    tempr = cr;
+    tempi = ci;
+    cr = zr;
+    ci = zi;
+    zr = tempr;
+    zi = tempi;
+  }
+
   while((zr*zr)+(zi*zi) <= 4 && n < iter) {
-    /*    tempi and tempr are introduced so that the calculation
-     *    below does not use the new value for the second expression.
-     *    Not using them introduced a nasty bug that took hours to debug
-     */
-    float tempi, tempr;
     /*
      *    z = z*z + c
      *    here, z*z = (a+bi)(a+bi) = a^2 - b^2 + 2abi = (a^2 - b^2) + (2ab)i
@@ -68,14 +84,25 @@ iterateSmooth(float ci, float cr, float zi, float zr)
    *    that returns a float in the range [0,iter) rather than an integer
    */
   float n = 0;
+  float tempi, tempr;
+
+  if(mandelbrot) {
+    tempr = cr;
+    tempi = ci;
+    cr = zr;
+    ci = zi;
+    zr = tempr;
+    zi = tempi;
+  }
+
   while((zr*zr)+(zi*zi) <= 4 && n < iter) {
-    float tempi, tempr;
     tempr = (zr*zr) - (zi*zi) + cr;
     tempi = 2*zr*zi + ci;
     zr = tempr;
     zi = tempi;
     n++;
   }
+
   /*
    *    the smooth factor 1 - log(log2(abs(z))) converts the
    *    number of iterations returned into a smooth function,
@@ -106,12 +133,15 @@ main(int argc, char *argv[])
   side = 1024;
   iter = 100;
   smooth = false;
+  mandelbrot = false;
 
   for(int i = 1; i < argc; i++) {
     if(strcmp(argv[i],"-c") == 0) {
-      zr = atof(argv[i+1]);
-      zi = atof(argv[i+2]);
-      i+=2;
+      if(!(mandelbrot)) {
+        zr = atof(argv[i+1]);
+        zi = atof(argv[i+2]);
+        i+=2;
+      }
     }
     if(strcmp(argv[i],"-i") == 0) {
       iter = atoi(argv[i+1]);
@@ -119,6 +149,11 @@ main(int argc, char *argv[])
     }
     if(strcmp(argv[i],"-s") == 0) {
       smooth = true;
+    }
+    if(strcmp(argv[i],"-m") == 0) {
+      mandelbrot = true;
+      zr = 0.0f;
+      zi = 0.0f;
     }
   }
 
