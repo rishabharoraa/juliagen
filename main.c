@@ -29,6 +29,11 @@ iterate(float ci, float cr, float zi, float zr)
 {
   int n = 0;
   while((zr*zr)+(zi*zi) <= 4 && n < ITER) {
+    /*    tempi and tempr are introduced so that the calculation
+     *    below does not use the new value for the second expression.
+     *    Not using them introduced a nasty bug that took hours to debug
+     */
+    float tempi, tempr;
     /*
      *    z = z*z + c
      *    here, z*z = (a+bi)(a+bi) = a^2 - b^2 + 2abi = (a^2 - b^2) + (2ab)i
@@ -38,7 +43,6 @@ iterate(float ci, float cr, float zi, float zr)
      *    new imaginary part = 2*a*b + ci
      *    if abs(z) > 2 then it diverges
      */
-    float tempi, tempr;
     tempr = (zr*zr) - (zi*zi) + cr;
     tempi = 2*zr*zi + ci;
     zr = tempr;
