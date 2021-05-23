@@ -11,7 +11,7 @@ usage : -i 25
 -s : sets smooth coloring as true (default : false)
 usage : -s
 
--m : sets the mode to mandelbrot set, overrides -c (default : julia)
+-m : sets the mode to mandelbrot set; overrides -c (default : julia)
 usage : -m
 ```
 
